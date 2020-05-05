@@ -6,7 +6,7 @@ import URLtest_predict_pipeline
 import cloudinary
 import cloudinary.uploader
 
-
+from app_config import cloud_api_key
 
 app = Flask(__name__)
 app.config["ALLOWED_EXTENSIONS"] = ["wav", "WAV"]
@@ -34,15 +34,16 @@ def upload_file():
          #f.save(secure_filename(f.filename))
          #file_name = (f.filename)
 
-         result = cloudinary.uploader.unsigned_upload(f, upload_preset= 'q8vijdwg', cloud_name = 'dmqj5ypfp', resource_type='auto' )
+         #result = cloudinary.uploader.unsigned_upload(f, upload_preset= 'q8vijdwg', cloud_name = 'dmqj5ypfp', resource_type='auto' )
+         result = cloudinary.uploader.upload(f, api_key =cloud_api_key, api_secret = 'oE0lsB5Y-h5nJZbzlphcWgVBMhY', cloud_name = 'lulu666666', resource_type = 'video', use_filename = True, unique_filename= False)
          wavURL = result['url']
+
          predicted_pitch = URLtest_predict_pipeline.predict_pitch(wavURL)
          predicted_inst = URLtest_predict_pipeline.predict_instrument(wavURL)
+         # for play audio part
+         version = wavURL
 
-         #testing 
-         #predicted_pitch = 'A3'
-         #predicted_inst = 'Piano'
-         return render_template('dashboard.html',predicted_pitch = predicted_pitch, predicted_inst = predicted_inst)
+         return render_template('dashboard.html',predicted_pitch = predicted_pitch, predicted_inst = predicted_inst, version = version)
       else: 
          #return "file type error"
          return render_template('error.html')
