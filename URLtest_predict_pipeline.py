@@ -27,7 +27,8 @@ import tensorflow as tf
 #import pickle
 #from keras.models import Model
 
-'''This python script includes 2 functions, predict_pitch and predict_instrument'''
+'''This python script includes 4 functions, predict_pitch() and predict_instrument()
+ And 2 functions for visualize spectrogram'''
 
 # create a function for pitch pred
 def predict_pitch(url):
@@ -46,7 +47,7 @@ def predict_pitch(url):
     #audio, samplerate = sf.read(io.BytesIO(urlopen(url).read()), start=0, stop=44100)
     #data = urlopen(url)
     #audio = audio.T
-    data_22k = librosa.resample(audio, samplerate, 22050)
+    data_22k = librosa.resample(audio, samplerate, 21395)
     #print(data_22k)
     fig = plt.figure(figsize=[1.5,10])
     # Convert audio array to 'Constant-Q transform'. 86 bins are created to take pitches form C1 to C#8
@@ -67,10 +68,10 @@ def predict_pitch(url):
     mfccs_norm = normalize(img, axis=0, norm='max')
         
     # close the plotted image so it wont show while in the loop
-    #plt.close()
-    #fig.clf()
-    #plt.close(fig)
-    #plt.close('all')
+    plt.close()
+    fig.clf()
+    plt.close(fig)
+    plt.close('all')
 
     # convert mfccs_norm into 4d array
 
@@ -138,7 +139,7 @@ def predict_instrument(url):
     #audio, samplerate = sf.read(io.BytesIO(urlopen(url).read()), start=0, stop=44100)
     #data = urlopen(url)
     #audio = audio.T
-    data_22k = librosa.resample(audio, samplerate, 22050)
+    data_22k = librosa.resample(audio, samplerate, 21395)
 
     fig = plt.figure(figsize=[6,4])
     # Convert audio array to 'Constant-Q transform'. 86 bins are created to take pitches form C1 to C#8
@@ -159,10 +160,10 @@ def predict_instrument(url):
     inst_mfccs_norm = normalize(img, axis=0, norm='max')
     
     # close the plotted image so it wont show while in the loop
-    #plt.close()
-    #fig.clf()
-    #plt.close(fig)
-    #plt.close('all')
+    plt.close()
+    fig.clf()
+    plt.close(fig)
+    plt.close('all')
         
     # convert mfccs_norm into 4d array
 
@@ -200,3 +201,52 @@ def predict_instrument(url):
     
     return inst_pred  
 
+# create a functions to get pitch and instrument spectrogram
+def get_spect_pitch(url):
+    '''This function gets the spectrogram for pitch'''
+    
+    #direclt use URL and convert to audio file
+    audio, samplerate = sf.read(io.BytesIO(urlopen(url).read()))
+    
+    audio = audio.T
+    data_22k = librosa.resample(audio, samplerate, 21395) # local files: sampleRate = 22050
+    fig = plt.figure(figsize=[1.5,10])
+
+    # Convert audio array to 'Constant-Q transform'. 86 bins are created to take pitches form E1 to C#8
+    conQfit = librosa.cqt(data_22k,hop_length=4096,n_bins=86)
+    librosa.display.specshow(conQfit)
+               
+    # Capture image and convert into 2D array
+    buf = io.BytesIO()
+    fig.savefig(buf, format="png", dpi=(56))
+    buf.seek(0)
+    data = buf.read()
+    buf.close()
+    
+    return data
+
+def get_spect_inst(url):
+    '''This function get the spectrogram for instrument'''
+
+    #URL 
+    audio, samplerate = sf.read(io.BytesIO(urlopen(url).read()))
+
+    audio = audio.T
+    data_22k = librosa.resample(audio, samplerate, 21395)
+
+    fig = plt.figure(figsize=[6,4])
+
+    # Convert audio array to 'Constant-Q transform'. 86 bins are created to take pitches form E1 to C#8
+    mfccs = librosa.feature.melspectrogram(data_22k, hop_length = 1024)  
+    mel_spec = librosa.power_to_db(mfccs, ref=np.max,)
+    librosa.display.specshow(mel_spec)
+
+    # Capture image and convert into 2D array
+    buf = io.BytesIO()
+    fig.savefig(buf, format="png", dpi=(90))
+    buf.seek(0)
+    data = buf.read()
+    buf.close()
+    
+    
+    return data 
