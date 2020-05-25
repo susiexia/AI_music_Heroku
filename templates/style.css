@@ -1,0 +1,14 @@
+.jumbotron{
+    background-color: lightsteelblue ;
+    background-image: url("bac.jpg") ;
+    background-size: 100% 100%;
+    color:#f7f7f7;
+
+    
+}
+
+.jumbotron{
+    background-image: url("../images/nasa.jpg") ;
+    background-size: 100% 100%;
+    text-align: center;
+}

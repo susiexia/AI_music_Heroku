@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Music</title>
+    <link  
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous"
+    />
+    <link rel="stylesheet" type="text/css" href="style.css" >
+</head>
+<body>
+    <!--webpage header-->
+    <div class="jumbotron">
+        <div class="container">
+          <h1 class="display-3">Audio<span>Uploader</span></h1>
+          <p>Please upload a .wav file that you would like to have the pitch and instrument identified. Our convolutional neural network (CNN) models will output the instrument and pitch, as well as the pitch and instrument spectrogram, and the model information.</p>
+          
+          <div class = "loader">
+            <form action = "/uploader" method = "POST" 
+               enctype = "multipart/form-data">
+               <input type = "file" name = "file" />
+               <input type = "submit"/>
+            </form> 
+          </div>
+        </div>
+    </div>
+
+    <div class="container">
+        
+        <div class="row">
+          <div class="col-md-6">
+            <h2>Instruction</h2>
+            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+    
+
+          </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+              <h2>Test your Instruments</h2>
+              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+      
+  
+            </div>
+          </div>
+</body>
+</html>
